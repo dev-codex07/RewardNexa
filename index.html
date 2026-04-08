@@ -3,53 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RewardNexa - Ad Handler</title>
+    <title>RewardNexa - Auto Reward</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="https://sad.adsgram.ai/js/sad.min.js"></script>
-    <style>
-        body { 
-            background: #0e0e0e; 
-            color: #ffffff; 
-            display: flex; 
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            margin: 0; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .loader {
-            border: 4px solid #333;
-            border-top: 4px solid #2481cc;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        p { margin-top: 20px; font-size: 18px; letter-spacing: 1px; }
-    </style>
 </head>
-<body>
-    <div class="loader"></div>
-    <p>Loading Video Ad...</p>
+<body style="background:#000; color:#fff; text-align:center; padding-top:50px;">
+    <p id="msg">Loading Video Ad...</p>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.ready();
-        tg.expand(); // WebView ko poora kholne ke liye
 
-        // Adsgram Block ID yahan daalein
-        const AdController = window.Adsgram.init({ blockId: "YOUR_ADSGRAM_BLOCK_ID_HERE" });
+        const AdController = window.Adsgram.init({ blockId: "27173" });
 
-        // Jaise hi page load ho, Ad start kar do
         window.onload = () => {
             AdController.show().then((result) => {
-                // Ad khatam hone par seedha bot par wapas
+                // SUCCESS: Ad poora dekha gaya
+                // Bot ko data bhejo taaki points add ho sakein
+                tg.sendData("ad_completed_10"); 
                 tg.close(); 
             }).catch((result) => {
-                // Agar koi error aaye ya user skip kare
-                console.error("Ad Error:", result);
+                // ERROR ya SKIP: Bina points ke close kar do
+                alert("Ad skip kiya ya error aaya!");
                 tg.close();
             });
         };
